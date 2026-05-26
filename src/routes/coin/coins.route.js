@@ -1,12 +1,12 @@
 const express = require('express');
-const { protect } = require('../middleware/authorization/authorization');
+const { protect } = require('../../middleware/authorization/authorization');
 const {
   getBalance,
   getCoinPacks,
   getTransactionHistory,
   createOrder,
   verifyPayment
-} = require('../controllers/coins.controller');
+} = require('../../controllers/coins.controller');
 
 const router = express.Router();
 

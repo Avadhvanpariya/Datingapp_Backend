@@ -1,6 +1,6 @@
 const express = require('express');
-const { protect } = require('../middleware/authorization/authorization');
-const { getRecommendations, getPublicProfile } = require('../controllers/profiles.controller');
+const { protect } = require('../../middleware/authorization/authorization');
+const { getRecommendations, getPublicProfile } = require('../../controllers/profiles.controller');
 
 const router = express.Router();
 

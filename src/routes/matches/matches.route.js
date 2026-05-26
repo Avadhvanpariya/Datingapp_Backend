@@ -1,11 +1,11 @@
 const express = require('express');
-const { protect } = require('../middleware/authorization/authorization');
-const { 
-  likeUser, 
-  superlikeUser, 
-  passUser, 
-  getMatchesList 
-} = require('../controllers/matches.controller');
+const { protect } = require('../../middleware/authorization/authorization');
+const {
+  likeUser,
+  superlikeUser,
+  passUser,
+  getMatchesList
+} = require('../../controllers/matches.controller');
 
 const router = express.Router();
 

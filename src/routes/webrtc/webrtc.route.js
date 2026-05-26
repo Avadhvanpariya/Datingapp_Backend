@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const { protect } = require('../middleware/authorization/authorization');
+const { protect } = require('../../middleware/authorization/authorization');
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get('/config', protect, (req, res) => {
       { urls: 'stun:stun2.l.google.com:19302' }
     ];
 
-    const turnSecret = process.env.TURN_SHARED_SECRET;
+    // const turnSecret = process.env.TURN_SHARED_SECRET;
     const turnUrlUdp = process.env.TURN_SERVER_UDP;
     const turnUrlTcp = process.env.TURN_SERVER_TCP;
 
@@ -60,7 +60,7 @@ router.get('/config', protect, (req, res) => {
 // Retrieve call history for the authenticated user
 router.get('/history', protect, async (req, res) => {
   try {
-    const CallLog = require('../models/callLog.model');
+    const CallLog = require('../../models/callLog.model');
     const logs = await CallLog.find({
       $or: [
         { caller: req.user.id },

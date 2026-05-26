@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { SWIPE_TYPES } = require('../constants/enums');
 
 const swipeSchema = new mongoose.Schema(
   {
     liker: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     liked: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    type: { type: String, enum: ['like', 'pass', 'superlike'], required: true },
+    type: { type: String, enum: Object.values(SWIPE_TYPES), required: true },
     isMatch: { type: Boolean, default: false }
   },
   { timestamps: true }
