@@ -71,3 +71,6 @@ playwright-report/
 
 # Misc
 *.tgz
+
+#
+firebase-service-account.json

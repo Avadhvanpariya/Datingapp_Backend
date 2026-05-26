@@ -1,6 +1,6 @@
 const express = require('express');
-const { protect } = require('../middleware/authorization/authorization');
-const postUpload = require('../middleware/postUpload');
+const { protect } = require('../../middleware/authorization/authorization');
+const postUpload = require('../../middleware/postUpload');
 const {
   createPost,
   getFeedPosts,
@@ -11,13 +11,15 @@ const {
   getPostComments,
   deletePost,
   getUserPosts
-} = require('../controllers/post.controller');
+} = require('../../controllers/post.controller');
+const compressMedia = require('../../middleware/compressMedia');
+
 
 const router = express.Router();
 
 router.use(protect);
 
-router.post('/', postUpload.single('file'), createPost);
+router.post('/', postUpload.single('file'), compressMedia, createPost);
 router.get('/feed', getFeedPosts);
 router.get('/my-posts', getMyPosts);
 router.get('/user/:userId', getUserPosts);

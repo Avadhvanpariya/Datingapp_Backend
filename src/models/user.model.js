@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { USER_ROLES } = require('../constants/enums');
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,7 +8,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, lowercase: true, trim: true, unique: true, sparse: true },
     googleId: { type: String, default: null },
     avatar: { type: String, default: null },
-    role: { type: String, enum: ['user', 'host'], default: 'user' },
+    role: { type: String, enum: Object.values(USER_ROLES), default: 'user' },
     firebaseUid: { type: String, default: null },
     isPhoneVerified: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },

@@ -1,11 +1,11 @@
 const express = require('express');
-const { protect } = require('../middleware/authorization/authorization');
+const { protect } = require('../../middleware/authorization/authorization');
 const {
   followUser,
   unfollowUser,
   getFollowers,
   getFollowing
-} = require('../controllers/follow.controller');
+} = require('../../controllers/follow.controller');
 
 const router = express.Router();
 

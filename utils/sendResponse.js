@@ -2,18 +2,8 @@ module.exports = (
     res,
     {
         statusCode = 200,
-        success = true,
-        message = "Success",
-        data = null,
-        meta = null,
+        ...rest
     }
 ) => {
-
-    return res.status(statusCode).json({
-        success,
-        message,
-        meta,
-        data,
-    });
-
+    return res.status(statusCode).json(rest);
 };

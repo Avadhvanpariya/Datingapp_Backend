@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { TRANSACTION_STATUS, TRANSACTION_TYPES } = require('../constants/enums');
 
 const coinTransactionSchema = new mongoose.Schema(
   {
@@ -10,18 +11,11 @@ const coinTransactionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'completed', 'failed'],
+      enum: Object.values(TRANSACTION_STATUS)
     },
     type: {
       type: String,
-      enum: [
-        'purchase',              // Razorpay top-up
-        'connection_fee_debit',  // fee deducted from caller on pickup
-        'connection_fee_credit', // fee credited to host on pickup
-        'per_minute_debit',      // Per-minute charge deducted from caller
-        'per_minute_credit',     // Per-minute charge credited to host
-        'refund'                 // Manual / system refund
-      ],
+      enum: Object.values(TRANSACTION_TYPES),
       required: true
     },
     coins: { type: Number, required: true },          // Always positive value
@@ -40,7 +34,7 @@ const coinTransactionSchema = new mongoose.Schema(
     },
     // Razorpay fields (populated for 'purchase' type only)
     razorpayOrderId: { type: String, default: null },
-    razorpayPaymentId: { type: String, default: null}
+    razorpayPaymentId: { type: String, default: null }
   },
   { timestamps: true }
 );
