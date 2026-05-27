@@ -1,14 +1,16 @@
 const express = require('express');
-const { protect } = require('../../middleware/authorization/authorization');
-const { completeProfile, getMe, getUserStats } = require('../../controllers/user.controller');
+const userRoute = require('./user.route');
+const profilesRouter = require('../profiles/profiles.route');
+const followerRouter = require('../follower/followers.route');
+const coinsRouter = require('../coin/coins.route');
 
 const router = express.Router();
 
-// All user routes require login
-router.use(protect);
+router.use('/user', userRoute);
+router.use('/users', userRoute);
 
-router.get('/me', getMe);
-router.get('/stats', getUserStats);
-router.put('/complete-profile', completeProfile);
+router.use('/profiles', profilesRouter);
+router.use('/follower', followerRouter);
+router.use('/coins', coinsRouter);
 
 module.exports = router;
