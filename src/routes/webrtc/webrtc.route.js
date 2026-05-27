@@ -13,7 +13,7 @@ router.get('/config', protect, (req, res) => {
       { urls: 'stun:stun2.l.google.com:19302' }
     ];
 
-    // const turnSecret = process.env.TURN_SHARED_SECRET;
+    const turnSecret = process.env.TURN_SHARED_SECRET;
     const turnUrlUdp = process.env.TURN_SERVER_UDP;
     const turnUrlTcp = process.env.TURN_SERVER_TCP;
 

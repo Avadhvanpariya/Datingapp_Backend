@@ -6,7 +6,7 @@ const socialDepartment = require('./social/socialIndex.route');
 const router = express.Router();
 
 router.use('/auth', authRouter);
-router.use('/', userDepartment);
-router.use('/', socialDepartment);
+router.use('/', userDepartment); // user routes (users,profiles,follower,coins)
+router.use('/', socialDepartment); // social routes (matches,posts,chats,webrtc)
 
 module.exports = router;
