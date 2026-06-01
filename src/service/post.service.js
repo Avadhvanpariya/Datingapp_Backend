@@ -5,6 +5,7 @@ const AppError = require('../../utils/AppError');
 const { getPagination } = require('../../utils/pagination');
 const fs = require('fs');
 const path = require('path');
+const { uploadToCloudinary, deleteFromCloudinary } = require('../../utils/cloudinaryStorage');
 
 /**
  * Create a new Post (using multipart form-data)
@@ -15,7 +16,13 @@ const createPostService = async (text, userId, file) => {
 
     // Extract uploaded file properties from multer
     if (file) {
-        mediaUrl = `/uploads/posts/${file.filename}`;
+        // Try uploading to Cloudinary first
+        const cloudinarySecureUrl = await uploadToCloudinary(file.path, 'posts');
+        if (cloudinarySecureUrl) {
+            mediaUrl = cloudinarySecureUrl;
+        } else {
+            mediaUrl = `/uploads/posts/${file.filename}`;
+        }
 
         if (file.mimetype.startsWith('image/')) {
             finalMediaType = 'image';
@@ -279,17 +286,19 @@ const deletePostService = async (postId, currentUserId) => {
         throw new AppError('Unauthorized. Only the author can delete this post.', 403);
     }
 
-    // Unlink local media file from hard drive if present
+    // Unlink local media file from hard drive if present, or delete from Cloudinary
     if (post.mediaUrl) {
-        const filename = post.mediaUrl.split('/').pop();
-
-        const filePath = path.join(__dirname, '../../public/uploads/posts', filename);
-
-        if (fs.existsSync(filePath)) {
-            try {
-                fs.unlinkSync(filePath);
-            } catch (err) {
-                console.error('Failed to unlink media file:', err);
+        if (post.mediaUrl.includes('cloudinary.com')) {
+            await deleteFromCloudinary(post.mediaUrl);
+        } else {
+            const filename = post.mediaUrl.split('/').pop();
+            const filePath = path.join(__dirname, '../../public/uploads/posts', filename);
+            if (fs.existsSync(filePath)) {
+                try {
+                    fs.unlinkSync(filePath);
+                } catch (err) {
+                    console.error('Failed to unlink media file:', err);
+                }
             }
         }
     }

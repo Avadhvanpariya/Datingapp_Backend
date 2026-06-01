@@ -119,6 +119,8 @@ const getConversationMessagesService = async (
     };
 };
 
+const { uploadToCloudinary } = require('../../utils/cloudinaryStorage');
+
 /**
  * Upload a chat file attachment (image, video, or generic file)
  */
@@ -127,7 +129,13 @@ const uploadChatFileService = async (file) => {
         throw new AppError('No file attachment uploaded.', 400);
     }
 
-    const relativeUrl = `/uploads/chats/${file.filename}`;
+    let fileUrl = `/uploads/chats/${file.filename}`;
+    // Try uploading to Cloudinary first
+    const cloudinarySecureUrl = await uploadToCloudinary(file.path, 'chats');
+    if (cloudinarySecureUrl) {
+        fileUrl = cloudinarySecureUrl;
+    }
+
     let fileType = 'file';
 
     if (file.mimetype.startsWith('image/')) {
@@ -137,7 +145,7 @@ const uploadChatFileService = async (file) => {
     }
 
     return {
-        fileUrl: relativeUrl,
+        fileUrl,
         fileType,
         fileName: file.originalname
     };
